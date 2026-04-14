@@ -1,0 +1,4 @@
+[submodule "duck-island-icecream-knowledge-base"]
+	path = duck-island-icecream-knowledge-base
+	url = https://github.com/westwardquest/duck-island-icecream-knowledge-base
+	branch = main

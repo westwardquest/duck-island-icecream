@@ -6,6 +6,18 @@ Workspace repo (app / source). **Knowledge-only** Markdown lives in the **nested
 
 Runtime files generated here are intentionally minimal for Cursor + MCP.
 
+## Sample storefront (ticketing demo)
+
+A small **Next.js** app lives in **`sample-storefront/`**. Run it when you want a faux “client product” in the browser while tickets are filed against this workspace in EDF:
+
+```bash
+cd sample-storefront
+npm install
+npm run dev
+```
+
+Then open `http://localhost:3000`. See **`sample-storefront/README.md`** for build/start.
+
 ## Next steps
 
 1. Verify `edf.config` (`--push` auto-fills `GITHUB_OWNER` + `KNOWLEDGE_REPO_HTTPS` from created remotes).
