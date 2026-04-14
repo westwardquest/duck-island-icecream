@@ -1,0 +1,10 @@
+# Local secrets and Cursor MCP
+.cursor/mcp.json
+edf.config
+edf-local/
+vendor/
+
+# Nested knowledge repo is its own git root — ignore here so `git add` from this
+# repo does not treat it as an embedded repository (avoids broken commits / IDE errors).
+*-knowledge-base/
+
