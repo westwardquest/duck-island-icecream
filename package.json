@@ -1,0 +1,10 @@
+{
+  "name": "edf-workspace-duck-island-icecream",
+  "private": true,
+  "description": "Local npm scripts for EDF ticket CLI (no publish)",
+  "scripts": {
+    "edf:tickets": "node vendor/edf-client-kit/mcp/tickets-cli.mjs list",
+    "edf:ticket": "node vendor/edf-client-kit/mcp/tickets-cli.mjs get",
+    "edf:tickets:lookup": "node vendor/edf-client-kit/mcp/tickets-cli.mjs lookup"
+  }
+}

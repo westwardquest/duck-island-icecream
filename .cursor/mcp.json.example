@@ -1,15 +1,16 @@
 {
   "mcpServers": {
     "edf-tickets": {
-      "command": "npm",
+      "type": "stdio",
+      "command": "node",
       "args": [
-        "run",
-        "mcp:tickets"
+        "${workspaceFolder}/vendor/edf-client-kit/node_modules/tsx/dist/cli.mjs",
+        "${workspaceFolder}/vendor/edf-client-kit/mcp/src/index.ts"
       ],
-      "cwd": "../vendor/edf-client-kit",
+      "cwd": "${workspaceFolder}/vendor/edf-client-kit",
       "env": {
         "EDF_BASE_URL": "https://extreme-development-framework.vercel.app",
-        "EDF_SUPABASE_ACCESS_TOKEN": ""
+        "EDF_PERSONAL_ACCESS_TOKEN": ""
       }
     }
   }

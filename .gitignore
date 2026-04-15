@@ -2,7 +2,8 @@
 .cursor/mcp.json
 edf.config
 edf-local/
-vendor/
+# edf-client-kit is a git submodule (committed as a gitlink). Ignore install output only.
+vendor/edf-client-kit/node_modules/
 
 # Nested knowledge repo is its own git root — ignore here so `git add` from this
 # repo does not treat it as an embedded repository (avoids broken commits / IDE errors).
