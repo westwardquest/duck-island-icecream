@@ -13,9 +13,9 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Duck Island Icecream — sample storefront",
+  title: "Duck Island Ice Cream — sample storefront",
   description:
-    "Demo site for the Duck Island Icecream EDF workspace (ticketing system test).",
+    "Demo site for the Duck Island Ice Cream EDF workspace (ticketing system test). Flavours match duckislandicecream.co.nz.",
 };
 
 export default function RootLayout({

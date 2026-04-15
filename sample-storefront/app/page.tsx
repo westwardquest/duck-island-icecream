@@ -1,11 +1,9 @@
+import { officialFlavours } from "@/data/officialFlavours";
 import styles from "./page.module.css";
 
-const flavours = [
-  { name: "Vanilla bean", note: "Classic — ticket fodder: “more vanilla flecks”" },
-  { name: "Salted caramel", note: "Sticky — good for “too sweet” / “more salt” tickets" },
-  { name: "Blackberry sorbet", note: "Dairy-free — test dietary / allergen requests" },
-  { name: "Mint choc chip", note: "Polarising — perfect for faux duplicate tickets" },
-];
+const FLAVOURS_PAGE = "https://www.duckislandicecream.co.nz/flavours";
+const MAIN_SITE = "https://www.duckislandicecream.co.nz/";
+const SCOOP_STORES = "https://www.duckislandicecream.co.nz/scoop-stores";
 
 export default function Home() {
   return (
@@ -16,8 +14,8 @@ export default function Home() {
             🍦
           </span>
           <div>
-            <p className={styles.name}>Duck Island Icecream</p>
-            <p className={styles.tagline}>Sample client storefront</p>
+            <p className={styles.name}>Duck Island Ice Cream</p>
+            <p className={styles.tagline}>Sample storefront (EDF workspace demo)</p>
           </div>
         </div>
         <p className={styles.badge}>EDF ticketing demo</p>
@@ -26,25 +24,34 @@ export default function Home() {
       <main className={styles.main}>
         <section className={styles.hero}>
           <h1 className={styles.heroTitle}>
-            A tiny site you can point a faux client at
+            Small batch ice cream, big flavour
           </h1>
           <p className={styles.lead}>
-            This is intentionally simple: run it locally, then open tickets in the
-            workspace about flavours, copy, bugs, or “we need online ordering.”
-            Nothing here talks to Supabase — it is only a visual stand-in for the
-            product under support.
+            This page is a lightweight stand-in for the real Duck Island site: flavour
+            names and descriptions below match the public{" "}
+            <a href={FLAVOURS_PAGE}>flavours listing</a>. Run it locally while you file
+            tickets in the workspace; it does not connect to a backend.
           </p>
         </section>
 
         <section className={styles.section} aria-labelledby="flavours-heading">
           <h2 id="flavours-heading" className={styles.h2}>
-            Today&apos;s board (static)
+            Flavours
           </h2>
+          <p className={styles.sectionIntro}>
+            A sample of our range — see the{" "}
+            <a href={FLAVOURS_PAGE}>full list on duckislandicecream.co.nz</a>.
+          </p>
           <ul className={styles.grid}>
-            {flavours.map((f) => (
+            {officialFlavours.map((f) => (
               <li key={f.name} className={styles.card}>
+                {f.tags && f.tags.length > 0 ? (
+                  <p className={styles.flavourTags}>
+                    {f.tags.join(" · ")}
+                  </p>
+                ) : null}
                 <p className={styles.flavourName}>{f.name}</p>
-                <p className={styles.flavourNote}>{f.note}</p>
+                <p className={styles.flavourNote}>{f.description}</p>
               </li>
             ))}
           </ul>
@@ -52,18 +59,16 @@ export default function Home() {
 
         <section className={styles.section} aria-labelledby="visit-heading">
           <h2 id="visit-heading" className={styles.h2}>
-            Visit (fake)
+            Visit us
           </h2>
           <div className={styles.panel}>
             <p>
-              <strong>Hours:</strong> Tue–Sun, 11am–9pm
+              We scoop at shops across New Zealand — hours and addresses are on our{" "}
+              <a href={SCOOP_STORES}>scoop stores</a> page.
             </p>
             <p>
-              <strong>Address:</strong> 123 Wharf Street, Sample Bay
-            </p>
-            <p className={styles.hint}>
-              Use tickets to request changes to hours, address, or seasonal copy —
-              that is what this workspace is for.
+              <strong>More info:</strong>{" "}
+              <a href={MAIN_SITE}>duckislandicecream.co.nz</a>
             </p>
           </div>
         </section>
@@ -71,8 +76,10 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <p>
-          <code>sample-storefront</code> — run with{" "}
-          <code>npm run dev</code> (see README in this folder).
+          Flavours on{" "}
+          <a href={FLAVOURS_PAGE}>duckislandicecream.co.nz/flavours</a>
+          {" · "}
+          <code>sample-storefront</code> — <code>npm run dev</code>
         </p>
       </footer>
     </div>
