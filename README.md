@@ -25,5 +25,5 @@ Then open `http://localhost:3000`. See **`sample-storefront/README.md`** for bui
 1. Verify `edf.config` (`--push` auto-fills `GITHUB_OWNER` + `KNOWLEDGE_REPO_HTTPS` from created remotes).
 2. Open this folder in Cursor and restart Cursor if MCP does not appear immediately.
 3. **Cursor Settings → Features → Model Context Protocol:** enable the **edf-tickets** server (quickstart cannot toggle this for you).
-4. **Tickets from the terminal:** `npm run edf:tickets` (see `AGENTS.md`).
+4. **Tickets from the terminal:** `npm run edf:tickets` (full rules in `vendor/edf-client-kit/AGENTS.md`; root `AGENTS.md` is the pointer).
 5. Refresh MCP token later by re-running: `npm run quickstart:customer -- --client-root "C:/VSCode/ExtremeDevelopmentFramework/quickstarts/duck-island-icecream"`.

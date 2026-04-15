@@ -4,7 +4,9 @@
   "description": "Local npm scripts for EDF ticket CLI (no publish)",
   "scripts": {
     "edf:tickets": "node vendor/edf-client-kit/mcp/tickets-cli.mjs list",
+    "edf:tickets:queue": "node vendor/edf-client-kit/mcp/tickets-cli.mjs list --queue",
     "edf:ticket": "node vendor/edf-client-kit/mcp/tickets-cli.mjs get",
-    "edf:tickets:lookup": "node vendor/edf-client-kit/mcp/tickets-cli.mjs lookup"
+    "edf:tickets:lookup": "node vendor/edf-client-kit/mcp/tickets-cli.mjs lookup",
+    "edf:ticket:patch": "node vendor/edf-client-kit/mcp/tickets-cli.mjs patch"
   }
 }

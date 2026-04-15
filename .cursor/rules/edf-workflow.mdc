@@ -1,0 +1,13 @@
+---
+description: EDF client workspace defaults — git push, knowledge folders, tickets.
+globs:
+alwaysApply: true
+---
+
+# EDF workflow (summary)
+
+Long-form policy: **`vendor/edf-client-kit/AGENTS.md`**. Root **`AGENTS.md`** is only a pointer; overrides go below it or in other repo files.
+
+- **Git:** do not `git push` unless the developer explicitly asked to deploy or push.
+- **Knowledge:** use **`knowledge/business/`** for customer-facing docs and **`knowledge/technical/`** for internal docs in the nested `*-knowledge-base` repo.
+- **Tickets:** branch names should include the ticket number; comments stay customer-facing and avoid unnecessary code. Preview ticket/comment changes with the developer before pushing when they asked for a push.
