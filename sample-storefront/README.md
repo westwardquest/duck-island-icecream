@@ -20,3 +20,7 @@ npm start
 ```
 
 No environment variables are required. This app does not connect to Supabase or the ticketing API.
+
+## Header logo
+
+The home page header uses the **official wordmark SVGs** from [duckislandicecream.co.nz](https://www.duckislandicecream.co.nz/) (gold gradient + purple paths), inlined via [`components/duck-island-logo-markup.ts`](components/duck-island-logo-markup.ts). Update that file if the live site changes its header markup.

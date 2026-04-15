@@ -1,0 +1,27 @@
+/**
+ * Layout matches duckislandicecream.co.nz header: gold gradient + purple wordmark share one cell.
+ */
+.wrap {
+  display: block;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.markup {
+  display: grid;
+  grid-template: 1fr / 1fr;
+  align-items: start;
+  justify-items: start;
+  height: clamp(2.25rem, 5.5vw, 3rem);
+}
+
+.markup :global(svg) {
+  grid-area: 1 / 1;
+  height: 100%;
+  width: auto;
+  max-width: min(240px, 100%);
+}
+
+.markup :global(svg.logo-purple path.fill) {
+  fill: #4a3568;
+}

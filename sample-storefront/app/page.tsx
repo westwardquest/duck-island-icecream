@@ -1,3 +1,4 @@
+import { DuckIslandLogo } from "@/components/DuckIslandLogo";
 import { officialFlavours } from "@/data/officialFlavours";
 import styles from "./page.module.css";
 
@@ -10,11 +11,8 @@ export default function Home() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.brand}>
-          <span className={styles.logo} aria-hidden>
-            🍦
-          </span>
-          <div>
-            <p className={styles.name}>Duck Island Ice Cream</p>
+          <DuckIslandLogo homeUrl={MAIN_SITE} />
+          <div className={styles.brandText}>
             <p className={styles.tagline}>Sample storefront (EDF workspace demo)</p>
           </div>
         </div>
