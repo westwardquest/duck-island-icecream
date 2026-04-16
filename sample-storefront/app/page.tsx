@@ -1,5 +1,7 @@
 import { DuckIslandLogo } from "@/components/DuckIslandLogo";
+import { FlavourListTabs } from "@/components/FlavourListTabs";
 import { officialFlavours } from "@/data/officialFlavours";
+import { specialFlavours } from "@/data/specialFlavours";
 import styles from "./page.module.css";
 
 const FLAVOURS_PAGE = "https://www.duckislandicecream.co.nz/flavours";
@@ -36,23 +38,11 @@ export default function Home() {
           <h2 id="flavours-heading" className={styles.h2}>
             Flavours
           </h2>
-          <p className={styles.sectionIntro}>
-            A sample of our range — see the{" "}
-            <a href={FLAVOURS_PAGE}>full list on duckislandicecream.co.nz</a>.
-          </p>
-          <ul className={styles.grid}>
-            {officialFlavours.map((f) => (
-              <li key={f.name} className={styles.card}>
-                {f.tags && f.tags.length > 0 ? (
-                  <p className={styles.flavourTags}>
-                    {f.tags.join(" · ")}
-                  </p>
-                ) : null}
-                <p className={styles.flavourName}>{f.name}</p>
-                <p className={styles.flavourNote}>{f.description}</p>
-              </li>
-            ))}
-          </ul>
+          <FlavourListTabs
+            regularFlavours={officialFlavours}
+            specialFlavours={specialFlavours}
+            flavoursPageUrl={FLAVOURS_PAGE}
+          />
         </section>
 
         <section className={styles.section} aria-labelledby="visit-heading">
