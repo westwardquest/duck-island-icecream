@@ -6,11 +6,11 @@ Workspace repo (app / source). **Knowledge-only** Markdown lives in the **nested
 
 Runtime files generated here are intentionally minimal for Cursor + MCP.
 
-**edf-client-kit:** **`vendor/edf-client-kit`** is a **git submodule** (published repo). Pull updates with `git pull` inside that folder, or `git submodule update --remote vendor/edf-client-kit` from this root, then `npm install` there if needed. See the framework **`docs/repository_layout.md`** and **`npm run refresh:vendor-kit`** when the published kit lags the monorepo.
+**warpdesk-client-kit:** **`vendor/warpdesk-client-kit`** is a **git submodule** (published repo). Pull updates with `git pull` inside that folder, or `git submodule update --remote vendor/warpdesk-client-kit` from this root, then `npm install` there if needed. See the framework **`docs/repository_layout.md`** and **`npm run refresh:vendor-kit`** when the published kit lags the monorepo.
 
 ## Sample storefront (ticketing demo)
 
-A small **Next.js** app lives in **`sample-storefront/`**. Run it when you want a faux “client product” in the browser while tickets are filed against this workspace in EDF:
+A small **Next.js** app lives in **`sample-storefront/`**. Run it when you want a faux “client product” in the browser while tickets are filed against this workspace in WarpDesk:
 
 ```bash
 cd sample-storefront
@@ -22,8 +22,9 @@ Then open `http://localhost:3000`. See **`sample-storefront/README.md`** for bui
 
 ## Next steps
 
-1. Verify `edf.config` (`--push` auto-fills `GITHUB_OWNER` + `KNOWLEDGE_REPO_HTTPS` from created remotes).
+1. Verify `warpdesk.config` (`--push` auto-fills `GITHUB_OWNER` + `KNOWLEDGE_REPO_HTTPS` from created remotes).
 2. Open this folder in Cursor and restart Cursor if MCP does not appear immediately.
-3. **Cursor Settings → Features → Model Context Protocol:** enable the **edf-tickets** server (quickstart cannot toggle this for you).
-4. **Tickets from the terminal:** `npm run edf:tickets` (full rules in `vendor/edf-client-kit/AGENTS.md`; root `AGENTS.md` is the pointer).
-5. Refresh MCP token later by re-running: `npm run quickstart:customer -- --client-root "C:/VSCode/ExtremeDevelopmentFramework/quickstarts/duck-island-icecream"`.
+3. **Cursor Settings → Features → Model Context Protocol:** enable the **warpdesk-tickets** server (quickstart cannot toggle this for you).
+4. **Tickets from the terminal:** `npm run warpdesk:tickets` (full rules in `vendor/warpdesk-client-kit/AGENTS.md`; root `AGENTS.md` is the pointer).
+5. Set **`WARPDESK_PERSONAL_ACCESS_TOKEN`** (`wds_pat_…` from the app **Settings → Personal access tokens**) in **`.cursor/mcp.json`** next to the same deployment as **`WARPDESK_BASE_URL`**, then restart Cursor or reload MCP.
+6. Refresh MCP later by re-running: `npm run quickstart:customer -- --client-root "C:/VSCode/warpdesk/quickstarts/duck-island-icecream"` from the WarpDesk framework repo.

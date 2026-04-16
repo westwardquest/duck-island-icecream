@@ -1,16 +1,16 @@
 {
   "mcpServers": {
-    "edf-tickets": {
+    "warpdesk-tickets": {
       "type": "stdio",
       "command": "node",
       "args": [
-        "${workspaceFolder}/vendor/edf-client-kit/node_modules/tsx/dist/cli.mjs",
-        "${workspaceFolder}/vendor/edf-client-kit/mcp/src/index.ts"
+        "${workspaceFolder}/vendor/warpdesk-client-kit/node_modules/tsx/dist/cli.mjs",
+        "${workspaceFolder}/vendor/warpdesk-client-kit/mcp/src/index.ts"
       ],
-      "cwd": "${workspaceFolder}/vendor/edf-client-kit",
+      "cwd": "${workspaceFolder}/vendor/warpdesk-client-kit",
       "env": {
-        "EDF_BASE_URL": "https://extreme-development-framework.vercel.app",
-        "EDF_PERSONAL_ACCESS_TOKEN": ""
+        "WARPDESK_BASE_URL": "https://warpdesk.vercel.app",
+        "WARPDESK_PERSONAL_ACCESS_TOKEN": ""
       }
     }
   }

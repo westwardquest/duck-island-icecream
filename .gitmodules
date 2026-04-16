@@ -2,6 +2,6 @@
 	path = duck-island-icecream-knowledge-base
 	url = https://github.com/westwardquest/duck-island-icecream-knowledge-base
 	branch = main
-[submodule "vendor/edf-client-kit"]
-	path = vendor/edf-client-kit
+[submodule "vendor/warpdesk-client-kit"]
+	path = vendor/warpdesk-client-kit
 	url = https://github.com/westwardquest/edf-client-kit.git

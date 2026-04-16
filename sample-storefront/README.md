@@ -1,6 +1,6 @@
 # Duck Island Icecream — sample storefront
 
-Minimal **Next.js** demo site for the `duck-island-icecream` workspace. Use it as the fake “product under support” while the faux client opens tickets in the EDF app.
+Minimal **Next.js** demo site for the `duck-island-icecream` workspace. Use it as the fake “product under support” while the faux client opens tickets in the WarpDesk app.
 
 ## Run locally
 
