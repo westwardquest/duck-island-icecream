@@ -7,6 +7,7 @@
     "edf:tickets:queue": "node vendor/edf-client-kit/mcp/tickets-cli.mjs list --queue",
     "edf:ticket": "node vendor/edf-client-kit/mcp/tickets-cli.mjs get",
     "edf:tickets:lookup": "node vendor/edf-client-kit/mcp/tickets-cli.mjs lookup",
-    "edf:ticket:patch": "node vendor/edf-client-kit/mcp/tickets-cli.mjs patch"
+    "edf:ticket:patch": "node vendor/edf-client-kit/mcp/tickets-cli.mjs patch",
+    "edf:ticket:draft": "node vendor/edf-client-kit/mcp/tickets-cli.mjs draft"
   }
 }

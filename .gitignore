@@ -2,8 +2,6 @@
 .cursor/mcp.json
 edf.config
 edf-local/
-# EDF ticket update drafts (YAML); review then apply or reject locally
-.edf/
 # edf-client-kit is a git submodule (committed as a gitlink). Ignore install output only.
 vendor/edf-client-kit/node_modules/
 

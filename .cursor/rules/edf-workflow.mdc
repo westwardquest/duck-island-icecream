@@ -10,4 +10,4 @@ Long-form policy: **`vendor/edf-client-kit/AGENTS.md`**. Root **`AGENTS.md`** is
 
 - **Git:** do not `git push` unless the developer explicitly asked to deploy or push.
 - **Knowledge:** use **`knowledge/business/`** for customer-facing docs and **`knowledge/technical/`** for internal docs in the nested `*-knowledge-base` repo.
-- **Tickets:** branch names should include the ticket number; comments stay customer-facing and avoid unnecessary code. Preview ticket/comment changes with the developer before pushing when they asked for a push.
+- **Tickets:** use **draft -> review -> apply** for any ticket field or comment change (**`draft_ticket_update`** and files under **`.edf/ticket-drafts/`** - see **`.cursor/rules/edf-ticket-drafts.mdc`**). Branch names should include the ticket number; comments stay customer-facing. Do not use direct MCP `patch` / legacy comment tools unless `EDF_MCP_ALLOW_DIRECT_UPDATES=1` is set for a named reason.
