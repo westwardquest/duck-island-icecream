@@ -1,30 +1,43 @@
 import type { OfficialFlavour } from "./officialFlavours";
 
 /**
- * Sample “specials” for the demo storefront — rotating / limited flavours
- * (not a live scrape; names are plausible stand-ins for a specials board).
+ * Scoop store special flavours from
+ * https://www.duckislandicecream.co.nz/scoop-store-special-flavours
+ * (static snapshot; availability varies by store and season).
  */
 export const specialFlavours: OfficialFlavour[] = [
   {
-    name: "Feijoa Swirl",
+    name: "Straight Lime Was A Lie",
+    tags: ["VEGAN", "GF"],
+    description:
+      "A two-tone lime and vanilla milk ice cream swirled with crunchy vanilla milk crumb.",
+  },
+  {
+    name: "Mint Chip",
+    tags: ["VEGAN"],
+    description:
+      "Made from a blend of cashew, coconut and Bonsoy soy milk. This is a cool, minty ice cream packed with snappy dark chocolate shards. Fresh, nostalgic and so delish you won't be missing the dairy in this one.",
+  },
+  {
+    name: "Blueberry Cornmeal Pie",
+    tags: ["VEGAN", "GF"],
+    description:
+      "Golden cornmeal pie crust crumbs and jammy blueberries swirled through sweet tart blueberry ice cream.",
+  },
+  {
+    name: "Raspberry Lychee Sorbet",
+    description:
+      "Tart raspberries and sweet lychees join forces for the perfect summer sorbet.",
+  },
+  {
+    name: "Matcha Strawberry Milk Crumb",
     tags: ["GF"],
     description:
-      "When feijoas land, this pot goes fast — tart feijoa curd folded through vanilla bean ice cream.",
+      "Silky, full bodied premium Matcha powder is blended into our sweet cream base, studded with strawberry milk crumb for a crunchy pop of sweetness.",
   },
   {
-    name: "Hokey Pokey Crunch (batch run)",
+    name: "Orange Blossom Chocolate Chip",
     description:
-      "Extra honeycomb rubble, extra crunch — a scoop-shop batch with more golden shards than our regular range.",
-  },
-  {
-    name: "Black Doris Plum & Almond",
-    tags: ["GF"],
-    description:
-      "Ripened Black Doris plums, roasted almond praline, and a ripple of plum caramel. Here until the fruit runs out.",
-  },
-  {
-    name: "Lemon Meringue Pie",
-    description:
-      "Zesty lemon custard ice cream, pockets of torched meringue, and a shortbread crumble for that bakery finish.",
+      "Our take on a classic. Orange blossom and orange zest scented sweet cream with dark chocolate stracciatella throughout.",
   },
 ];

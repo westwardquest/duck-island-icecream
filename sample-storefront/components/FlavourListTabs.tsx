@@ -26,10 +26,12 @@ export function FlavourListTabs({
   regularFlavours,
   specialFlavours,
   flavoursPageUrl,
+  scoopSpecialFlavoursPageUrl,
 }: {
   regularFlavours: OfficialFlavour[];
   specialFlavours: OfficialFlavour[];
   flavoursPageUrl: string;
+  scoopSpecialFlavoursPageUrl: string;
 }) {
   const baseId = useId();
   const [tab, setTab] = useState<TabId>("regular");
@@ -73,13 +75,15 @@ export function FlavourListTabs({
       <p className={styles.sectionIntro}>
         {tab === "regular" ? (
           <>
-            A sample of our range — see the{" "}
-            <a href={flavoursPageUrl}>full list on duckislandicecream.co.nz</a>.
+            Names and blurbs match the public{" "}
+            <a href={flavoursPageUrl}>flavours page</a> on duckislandicecream.co.nz.
           </>
         ) : (
           <>
-            Limited scoops and batch runs — availability changes by shop and season.
-            For our core range, switch to{" "}
+            Small-batch scoop-shop lineup from the{" "}
+            <a href={scoopSpecialFlavoursPageUrl}>scoop store special flavours</a>{" "}
+            page — what&apos;s in the cabinet changes by store and season. For the core
+            range, switch to{" "}
             <span className={styles.visuallyHidden}>Regular flavours tab: </span>
             <button
               type="button"

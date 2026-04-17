@@ -5,6 +5,8 @@ import { specialFlavours } from "@/data/specialFlavours";
 import styles from "./page.module.css";
 
 const FLAVOURS_PAGE = "https://www.duckislandicecream.co.nz/flavours";
+const SCOOP_SPECIAL_FLAVOURS_PAGE =
+  "https://www.duckislandicecream.co.nz/scoop-store-special-flavours";
 const MAIN_SITE = "https://www.duckislandicecream.co.nz/";
 const SCOOP_STORES = "https://www.duckislandicecream.co.nz/scoop-stores";
 
@@ -27,10 +29,12 @@ export default function Home() {
             Small batch ice cream, big flavour
           </h1>
           <p className={styles.lead}>
-            This page is a lightweight stand-in for the real Duck Island site: flavour
-            names and descriptions below match the public{" "}
-            <a href={FLAVOURS_PAGE}>flavours listing</a>. Run it locally while you file
-            tickets in the workspace; it does not connect to a backend.
+            This page is a lightweight stand-in for the real Duck Island site: the
+            regular tab mirrors the public{" "}
+            <a href={FLAVOURS_PAGE}>flavours listing</a>, and the specials tab mirrors{" "}
+            <a href={SCOOP_SPECIAL_FLAVOURS_PAGE}>scoop store special flavours</a> (static
+            copy, not live-scraped). Run it locally while you file tickets in the
+            workspace; it does not connect to a backend.
           </p>
         </section>
 
@@ -42,6 +46,7 @@ export default function Home() {
             regularFlavours={officialFlavours}
             specialFlavours={specialFlavours}
             flavoursPageUrl={FLAVOURS_PAGE}
+            scoopSpecialFlavoursPageUrl={SCOOP_SPECIAL_FLAVOURS_PAGE}
           />
         </section>
 
@@ -66,6 +71,9 @@ export default function Home() {
         <p>
           Flavours on{" "}
           <a href={FLAVOURS_PAGE}>duckislandicecream.co.nz/flavours</a>
+          {" · "}
+          Specials on{" "}
+          <a href={SCOOP_SPECIAL_FLAVOURS_PAGE}>scoop store special flavours</a>
           {" · "}
           <code>sample-storefront</code> — <code>npm run dev</code>
         </p>
