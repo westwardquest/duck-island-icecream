@@ -1,8 +1,12 @@
 import { DuckIslandLogo } from "@/components/DuckIslandLogo";
+import { FlavourListTabs } from "@/components/FlavourListTabs";
 import { officialFlavours } from "@/data/officialFlavours";
+import { specialFlavours } from "@/data/specialFlavours";
 import styles from "./page.module.css";
 
 const FLAVOURS_PAGE = "https://www.duckislandicecream.co.nz/flavours";
+const SCOOP_SPECIAL_FLAVOURS_PAGE =
+  "https://www.duckislandicecream.co.nz/scoop-store-special-flavours";
 const MAIN_SITE = "https://www.duckislandicecream.co.nz/";
 const SCOOP_STORES = "https://www.duckislandicecream.co.nz/scoop-stores";
 
@@ -25,10 +29,12 @@ export default function Home() {
             Small batch ice cream, big flavour
           </h1>
           <p className={styles.lead}>
-            This page is a lightweight stand-in for the real Duck Island site: flavour
-            names and descriptions below match the public{" "}
-            <a href={FLAVOURS_PAGE}>flavours listing</a>. Run it locally while you file
-            tickets in the workspace; it does not connect to a backend.
+            This page is a lightweight stand-in for the real Duck Island site: the
+            regular tab mirrors the public{" "}
+            <a href={FLAVOURS_PAGE}>flavours listing</a>, and the specials tab mirrors{" "}
+            <a href={SCOOP_SPECIAL_FLAVOURS_PAGE}>scoop store special flavours</a> (static
+            copy, not live-scraped). Run it locally while you file tickets in the
+            workspace; it does not connect to a backend.
           </p>
         </section>
 
@@ -36,23 +42,12 @@ export default function Home() {
           <h2 id="flavours-heading" className={styles.h2}>
             Flavours
           </h2>
-          <p className={styles.sectionIntro}>
-            A sample of our range — see the{" "}
-            <a href={FLAVOURS_PAGE}>full list on duckislandicecream.co.nz</a>.
-          </p>
-          <ul className={styles.grid}>
-            {officialFlavours.map((f) => (
-              <li key={f.name} className={styles.card}>
-                {f.tags && f.tags.length > 0 ? (
-                  <p className={styles.flavourTags}>
-                    {f.tags.join(" · ")}
-                  </p>
-                ) : null}
-                <p className={styles.flavourName}>{f.name}</p>
-                <p className={styles.flavourNote}>{f.description}</p>
-              </li>
-            ))}
-          </ul>
+          <FlavourListTabs
+            regularFlavours={officialFlavours}
+            specialFlavours={specialFlavours}
+            flavoursPageUrl={FLAVOURS_PAGE}
+            scoopSpecialFlavoursPageUrl={SCOOP_SPECIAL_FLAVOURS_PAGE}
+          />
         </section>
 
         <section className={styles.section} aria-labelledby="visit-heading">
@@ -76,6 +71,9 @@ export default function Home() {
         <p>
           Flavours on{" "}
           <a href={FLAVOURS_PAGE}>duckislandicecream.co.nz/flavours</a>
+          {" · "}
+          Specials on{" "}
+          <a href={SCOOP_SPECIAL_FLAVOURS_PAGE}>scoop store special flavours</a>
           {" · "}
           <code>sample-storefront</code> — <code>npm run dev</code>
         </p>
