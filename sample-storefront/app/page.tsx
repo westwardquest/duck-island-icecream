@@ -2,6 +2,7 @@ import { DuckIslandLogo } from "@/components/DuckIslandLogo";
 import { FlavourListTabs } from "@/components/FlavourListTabs";
 import { BackToTop } from "@/components/BackToTop";
 import { NewsletterMock } from "@/components/NewsletterMock";
+import { PenguinMascot } from "@/components/PenguinMascot";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { officialFlavours } from "@/data/officialFlavours";
 import { specialFlavours } from "@/data/specialFlavours";
@@ -31,6 +32,7 @@ export default function Home() {
           <div className={styles.headerActions}>
             <ThemeToggle />
             <p className={styles.badge}>EDF ticketing demo</p>
+            <PenguinMascot />
           </div>
         </div>
       </header>
