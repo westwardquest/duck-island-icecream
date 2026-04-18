@@ -6,6 +6,22 @@
   --accent-soft: #ffd4cc;
   --card: #ffffff;
   --border: #e8dfd4;
+  --shadow: rgba(28, 20, 16, 0.06);
+  --code-bg: #ede6dc;
+  --focus-ring: #e85d4c;
+}
+
+[data-theme="dark"] {
+  --cream: #12100e;
+  --ink: #f4ede4;
+  --muted: #a89f94;
+  --accent: #ff8a7a;
+  --accent-soft: #3d2a26;
+  --card: #1c1814;
+  --border: #3a332b;
+  --shadow: rgba(0, 0, 0, 0.35);
+  --code-bg: #2a241e;
+  --focus-ring: #ff8a7a;
 }
 
 html {
@@ -40,4 +56,13 @@ a {
 
 a:hover {
   color: #c13d2f;
+}
+
+[data-theme="dark"] a:hover {
+  color: #ffb5a8;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }

@@ -1,23 +1,48 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import type { OfficialFlavour } from "@/data/officialFlavours";
 import styles from "@/app/page.module.css";
 
 type TabId = "regular" | "special";
 
-function FlavourGrid({ items }: { items: OfficialFlavour[] }) {
+function slugify(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function matchesQuery(f: OfficialFlavour, q: string) {
+  const t = q.trim().toLowerCase();
+  if (!t) {
+    return true;
+  }
+  const blob = `${f.name} ${f.description}`.toLowerCase();
+  return blob.includes(t);
+}
+
+function FlavourGrid({
+  items,
+  tab,
+}: {
+  items: OfficialFlavour[];
+  tab: TabId;
+}) {
   return (
     <ul className={styles.grid}>
-      {items.map((f) => (
-        <li key={f.name} className={styles.card}>
-          {f.tags && f.tags.length > 0 ? (
-            <p className={styles.flavourTags}>{f.tags.join(" · ")}</p>
-          ) : null}
-          <p className={styles.flavourName}>{f.name}</p>
-          <p className={styles.flavourNote}>{f.description}</p>
-        </li>
-      ))}
+      {items.map((f) => {
+        const id = `flavour-${tab}-${slugify(f.name)}`;
+        return (
+          <li key={f.name} id={id} tabIndex={-1} className={styles.card}>
+            {f.tags && f.tags.length > 0 ? (
+              <p className={styles.flavourTags}>{f.tags.join(" · ")}</p>
+            ) : null}
+            <p className={styles.flavourName}>{f.name}</p>
+            <p className={styles.flavourNote}>{f.description}</p>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -34,15 +59,70 @@ export function FlavourListTabs({
   scoopSpecialFlavoursPageUrl: string;
 }) {
   const baseId = useId();
+  const liveId = `${baseId}-live`;
+  const searchId = `${baseId}-search`;
+
   const [tab, setTab] = useState<TabId>("regular");
+  const [query, setQuery] = useState("");
+  const [liveMsg, setLiveMsg] = useState("");
 
   const regularTabId = `${baseId}-tab-regular`;
   const specialTabId = `${baseId}-tab-special`;
   const regularPanelId = `${baseId}-panel-regular`;
   const specialPanelId = `${baseId}-panel-special`;
 
+  const activeSource = tab === "regular" ? regularFlavours : specialFlavours;
+
+  const filtered = useMemo(
+    () => activeSource.filter((f) => matchesQuery(f, query)),
+    [activeSource, query],
+  );
+
+  const pickRandom = useCallback(() => {
+    if (filtered.length === 0) {
+      return;
+    }
+    const f = filtered[Math.floor(Math.random() * filtered.length)]!;
+    const id = `flavour-${tab}-${slugify(f.name)}`;
+    setLiveMsg(`Selected: ${f.name}`);
+    window.requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      el?.focus({ preventScroll: true });
+    });
+  }, [filtered, tab]);
+
   return (
     <>
+      <div className={styles.flavourToolbar}>
+        <div className={styles.searchWrap}>
+          <label className={styles.searchLabel} htmlFor={searchId}>
+            Search flavours
+          </label>
+          <input
+            id={searchId}
+            className={styles.searchInput}
+            type="search"
+            autoComplete="off"
+            placeholder="Type to filter by name or description…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+        <button
+          type="button"
+          className={styles.randomScoop}
+          onClick={pickRandom}
+          disabled={filtered.length === 0}
+        >
+          Random scoop
+        </button>
+      </div>
+
+      <p id={liveId} className={styles.visuallyHidden} aria-live="polite">
+        {liveMsg}
+      </p>
+
       <div className={styles.tabBar} role="tablist" aria-label="Flavour list">
         <button
           type="button"
@@ -103,7 +183,15 @@ export function FlavourListTabs({
         aria-labelledby={regularTabId}
         hidden={tab !== "regular"}
       >
-        {tab === "regular" ? <FlavourGrid items={regularFlavours} /> : null}
+        {tab === "regular" ? (
+          filtered.length === 0 ? (
+            <p className={styles.emptyFlavours} role="status">
+              No flavours match your search. Try different words or clear the search box.
+            </p>
+          ) : (
+            <FlavourGrid items={filtered} tab="regular" />
+          )
+        ) : null}
       </div>
 
       <div
@@ -112,7 +200,15 @@ export function FlavourListTabs({
         aria-labelledby={specialTabId}
         hidden={tab !== "special"}
       >
-        {tab === "special" ? <FlavourGrid items={specialFlavours} /> : null}
+        {tab === "special" ? (
+          filtered.length === 0 ? (
+            <p className={styles.emptyFlavours} role="status">
+              No flavours match your search. Try different words or clear the search box.
+            </p>
+          ) : (
+            <FlavourGrid items={filtered} tab="special" />
+          )
+        ) : null}
       </div>
     </>
   );
