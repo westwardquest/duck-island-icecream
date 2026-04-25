@@ -3,7 +3,7 @@
 
 # Local secrets and Cursor MCP
 .cursor/mcp.json
-.warpdesk/*
+.warpdesk/
 warpdesk.config
 warpdesk-local/
 # warpdesk-client-kit is a git submodule (committed as a gitlink). Ignore install output only.
