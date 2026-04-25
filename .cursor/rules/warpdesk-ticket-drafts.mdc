@@ -3,11 +3,9 @@ description: Ticket field changes and comments must use the YAML draft flow (MCP
 alwaysApply: true
 ---
 
-> **Scope:** Copied by **`npm run quickstart:customer`** into **`.cursor/rules/`** on **client workspaces** only. The WarpDesk framework monorepo should **not** add this file to its own `.cursor/rules/`.
-
 # WarpDesk ticket updates — draft only (MCP)
 
-This **client** workspace uses **warpdesk-tickets** with **draft-first** ticket mutations (see **`vendor/warpdesk-client-kit/AGENTS.md`**).
+This workspace uses **warpdesk-tickets** with **draft-first** ticket mutations (see **`vendor/warpdesk-client-kit/AGENTS.md`**).
 
 ## Required flow
 
@@ -15,7 +13,7 @@ For **any** ticket change (comment, status, title, description, assignee, code l
 
 1. Prefer MCP **`draft_ticket_update`** (writes **`.warpdesk/ticket-drafts/*.ticket_draft`**), or the same flow via **`npm run warpdesk:ticket:draft`** / **`node vendor/warpdesk-client-kit/mcp/tickets-cli.mjs draft`** from the workspace root.
 2. The user reviews the YAML (or asks you to edit it).
-3. A human **applies** or **discards** using the **warpdesk-tools** custom editor (**Confirm** / **Discard**) or the HTTP API / app—not MCP. There is no **`apply_ticket_update_draft`**, **`npm run warpdesk:ticket:apply-draft`**, or agent CLI for apply/reject.
+3. A human **applies** or **discards** using the **warpdesk-tools** custom editor (**Confirm** / **Discard**) or the HTTP API / app—not MCP. There is no **`apply_ticket_update_draft`** or agent CLI for apply/reject.
 
 ## Do not (unless the user explicitly opts in)
 

@@ -1,6 +1,9 @@
+# Local handoff for the agent (see framework AGENTS.md)
+/agent-changes.review.txt
+
 # Local secrets and Cursor MCP
 .cursor/mcp.json
-.warpdesk/ticket-drafts/*
+.warpdesk/
 warpdesk.config
 warpdesk-local/
 # warpdesk-client-kit is a git submodule (committed as a gitlink). Ignore install output only.
@@ -9,3 +12,4 @@ vendor/warpdesk-client-kit/node_modules/
 # Nested knowledge repo is its own git root — ignore here so `git add` from this
 # repo does not treat it as an embedded repository (avoids broken commits / IDE errors).
 *-knowledge-base/
+.warpdesk/tickets.ticketselector

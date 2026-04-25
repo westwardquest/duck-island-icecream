@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 
@@ -12,10 +12,31 @@ const fraunces = Fraunces({
   subsets: ["latin"],
 });
 
+const siteTitle = "Duck Island Ice Cream — sample storefront";
+const siteDescription =
+  "Demo site for the Duck Island Ice Cream workspace. Flavours are a static in-repo snapshot.";
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fff8f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#12100e" },
+  ],
+};
+
 export const metadata: Metadata = {
-  title: "Duck Island Ice Cream — sample storefront",
-  description:
-    "Demo site for the Duck Island Ice Cream EDF workspace (ticketing system test). Flavours match duckislandicecream.co.nz.",
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    type: "website",
+    locale: "en_NZ",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({
@@ -24,7 +45,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${fraunces.variable}`}>
+    <html
+      lang="en"
+      className={`${dmSans.variable} ${fraunces.variable}`}
+      suppressHydrationWarning
+    >
       <body>{children}</body>
     </html>
   );
