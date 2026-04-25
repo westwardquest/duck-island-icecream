@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useId, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { OfficialFlavour } from "@/data/officialFlavours";
 import styles from "@/app/page.module.css";
 
@@ -34,7 +41,12 @@ function FlavourGrid({
       {items.map((f) => {
         const id = `flavour-${tab}-${slugify(f.name)}`;
         return (
-          <li key={f.name} id={id} tabIndex={-1} className={styles.card}>
+          <li
+            key={`${tab}-${slugify(f.name)}`}
+            id={id}
+            tabIndex={-1}
+            className={styles.card}
+          >
             {f.tags && f.tags.length > 0 ? (
               <p className={styles.flavourTags}>{f.tags.join(" · ")}</p>
             ) : null}
@@ -52,6 +64,8 @@ export function FlavourListTabs({
   specialFlavours,
   flavoursPageUrl,
   scoopSpecialFlavoursPageUrl,
+  /** Shown on the special tab to document when the static list was last verified. */
+  specialSnapshotVerifiedLabel,
   /** Scoop store specials are the most visible “homepage” subset for the demo. */
   defaultTab = "special",
 }: {
@@ -59,15 +73,39 @@ export function FlavourListTabs({
   specialFlavours: OfficialFlavour[];
   flavoursPageUrl: string;
   scoopSpecialFlavoursPageUrl: string;
+  specialSnapshotVerifiedLabel?: string;
   defaultTab?: TabId;
 }) {
   const baseId = useId();
   const liveId = `${baseId}-live`;
   const searchId = `${baseId}-search`;
+  const searchRef = useRef<HTMLInputElement | null>(null);
 
   const [tab, setTab] = useState<TabId>(defaultTab);
   const [query, setQuery] = useState("");
   const [liveMsg, setLiveMsg] = useState("");
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
+      const t = e.target;
+      if (!(t instanceof HTMLElement)) {
+        return;
+      }
+      if (t.isContentEditable) {
+        return;
+      }
+      if (t.closest("input, textarea, select, [data-flavour-skip-focus-slash]")) {
+        return;
+      }
+      e.preventDefault();
+      searchRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const regularTabId = `${baseId}-tab-regular`;
   const specialTabId = `${baseId}-tab-special`;
@@ -101,8 +139,13 @@ export function FlavourListTabs({
         <div className={styles.searchWrap}>
           <label className={styles.searchLabel} htmlFor={searchId}>
             Search flavours
+            <span className={styles.searchHint} aria-hidden="true">
+              {" "}
+              (press / to focus)
+            </span>
           </label>
           <input
+            ref={searchRef}
             id={searchId}
             className={styles.searchInput}
             type="search"
@@ -138,7 +181,7 @@ export function FlavourListTabs({
           data-active={tab === "regular" ? "true" : "false"}
           onClick={() => setTab("regular")}
         >
-          Regular flavours
+          Regular flavours ({regularFlavours.length})
         </button>
         <button
           type="button"
@@ -151,7 +194,7 @@ export function FlavourListTabs({
           data-active={tab === "special" ? "true" : "false"}
           onClick={() => setTab("special")}
         >
-          Special flavours
+          Special flavours ({specialFlavours.length})
         </button>
       </div>
 
@@ -176,6 +219,12 @@ export function FlavourListTabs({
               regular flavours
             </button>
             .
+            {specialSnapshotVerifiedLabel ? (
+              <>
+                {" "}
+                Static menu copy last verified {specialSnapshotVerifiedLabel}.
+              </>
+            ) : null}
           </>
         )}
       </p>

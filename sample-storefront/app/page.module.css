@@ -210,6 +210,11 @@
   color: var(--muted);
 }
 
+.searchHint {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
 .searchInput {
   width: 100%;
   margin: 0;

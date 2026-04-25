@@ -4,7 +4,11 @@ import type { OfficialFlavour } from "./officialFlavours";
  * Scoop store special flavours from
  * https://www.duckislandicecream.co.nz/scoop-store-special-flavours
  * (static snapshot; availability varies by store and season).
+ *
+ * Last checked against the public page: 2026-04-25 (lineup and copy).
  */
+export const specialFlavoursSnapshotVerifiedLabel = "25 April 2026";
+
 export const specialFlavours: OfficialFlavour[] = [
   {
     name: "Mint Chip",

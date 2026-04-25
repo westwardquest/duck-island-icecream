@@ -5,7 +5,10 @@ import { NewsletterMock } from "@/components/NewsletterMock";
 import { PenguinMascot } from "@/components/PenguinMascot";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { officialFlavours } from "@/data/officialFlavours";
-import { specialFlavours } from "@/data/specialFlavours";
+import {
+  specialFlavours,
+  specialFlavoursSnapshotVerifiedLabel,
+} from "@/data/specialFlavours";
 import styles from "./page.module.css";
 
 const FLAVOURS_PAGE = "https://www.duckislandicecream.co.nz/flavours";
@@ -61,6 +64,7 @@ export default function Home() {
             specialFlavours={specialFlavours}
             flavoursPageUrl={FLAVOURS_PAGE}
             scoopSpecialFlavoursPageUrl={SCOOP_SPECIAL_FLAVOURS_PAGE}
+            specialSnapshotVerifiedLabel={specialFlavoursSnapshotVerifiedLabel}
           />
         </section>
 
