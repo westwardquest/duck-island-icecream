@@ -14,7 +14,7 @@ const fraunces = Fraunces({
 
 const siteTitle = "Duck Island Ice Cream — sample storefront";
 const siteDescription =
-  "Demo site for the Duck Island Ice Cream workspace. Flavours mirror duckislandicecream.co.nz (static snapshot).";
+  "Demo site for the Duck Island Ice Cream workspace. Flavours are a static in-repo snapshot.";
 
 export const viewport: Viewport = {
   themeColor: [

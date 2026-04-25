@@ -62,8 +62,6 @@ function FlavourGrid({
 export function FlavourListTabs({
   regularFlavours,
   specialFlavours,
-  flavoursPageUrl,
-  scoopSpecialFlavoursPageUrl,
   /** Shown on the special tab to document when the static list was last verified. */
   specialSnapshotVerifiedLabel,
   /** Scoop store specials are the most visible “homepage” subset for the demo. */
@@ -71,8 +69,6 @@ export function FlavourListTabs({
 }: {
   regularFlavours: OfficialFlavour[];
   specialFlavours: OfficialFlavour[];
-  flavoursPageUrl: string;
-  scoopSpecialFlavoursPageUrl: string;
   specialSnapshotVerifiedLabel?: string;
   defaultTab?: TabId;
 }) {
@@ -201,14 +197,13 @@ export function FlavourListTabs({
       <p className={styles.sectionIntro}>
         {tab === "regular" ? (
           <>
-            Names and blurbs match the public{" "}
-            <a href={flavoursPageUrl}>flavours page</a> on duckislandicecream.co.nz.
+            Names and blurbs match the public flavours listing (static snapshot in this
+            repo).
           </>
         ) : (
           <>
-            Small-batch scoop-shop lineup from the{" "}
-            <a href={scoopSpecialFlavoursPageUrl}>scoop store special flavours</a>{" "}
-            page — what&apos;s in the cabinet changes by store and season. For the core
+            Small-batch scoop-shop lineup from the scoop store special flavours list — what
+            &apos;s in the cabinet changes by store and season. For the core
             range, switch to{" "}
             <span className={styles.visuallyHidden}>Regular flavours tab: </span>
             <button

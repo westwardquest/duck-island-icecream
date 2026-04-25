@@ -1,11 +1,10 @@
 import type { OfficialFlavour } from "./officialFlavours";
 
 /**
- * Scoop store special flavours from
- * https://www.duckislandicecream.co.nz/scoop-store-special-flavours
- * (static snapshot; availability varies by store and season).
+ * Scoop store special flavours (static snapshot; availability varies by store and season).
+ * Legacy public URL omitted from new-site and demo copy.
  *
- * Last checked against the public page: 2026-04-25 (lineup and copy).
+ * Last checked: 2026-04-25 (lineup and copy).
  */
 export const specialFlavoursSnapshotVerifiedLabel = "25 April 2026";
 
