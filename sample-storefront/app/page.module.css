@@ -328,6 +328,13 @@
   color: var(--muted);
 }
 
+.searchHighlight {
+  background: var(--accent-soft);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 0.05em;
+}
+
 .emptyFlavours {
   margin: 0;
   padding: 1rem 1.1rem;

@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { ReactNode } from "react";
 import type { OfficialFlavour } from "@/data/officialFlavours";
 import styles from "@/app/page.module.css";
 
@@ -36,16 +37,50 @@ function compareFlavours(a: OfficialFlavour, b: OfficialFlavour, sortMode: SortM
   return a.name.localeCompare(b.name) * direction;
 }
 
+function highlightMatch(text: string, q: string, keyPrefix: string): ReactNode {
+  const needle = q.trim();
+  if (!needle) {
+    return text;
+  }
+  const lower = text.toLowerCase();
+  const n = needle.toLowerCase();
+  const nodes: ReactNode[] = [];
+  let from = 0;
+  let k = 0;
+  for (;;) {
+    const i = lower.indexOf(n, from);
+    if (i < 0) {
+      if (from < text.length) {
+        nodes.push(text.slice(from));
+      }
+      break;
+    }
+    if (i > from) {
+      nodes.push(text.slice(from, i));
+    }
+    const slice = text.slice(i, i + needle.length);
+    nodes.push(
+      <mark key={`${keyPrefix}-mk-${k++}`} className={styles.searchHighlight}>
+        {slice}
+      </mark>,
+    );
+    from = i + needle.length;
+  }
+  return nodes.length > 0 ? nodes : text;
+}
+
 function FlavourGrid({
   items,
   tab,
   favourites,
+  searchQuery,
   onToggleFavourite,
   onCopyFlavourLink,
 }: {
   items: OfficialFlavour[];
   tab: TabId;
   favourites: Set<string>;
+  searchQuery: string;
   onToggleFavourite: (name: string) => void;
   onCopyFlavourLink: (f: OfficialFlavour) => void;
 }) {
@@ -65,7 +100,9 @@ function FlavourGrid({
               <p className={styles.flavourTags}>{f.tags.join(" · ")}</p>
             ) : null}
             <div className={styles.cardTitleRow}>
-              <p className={styles.flavourName}>{f.name}</p>
+              <p className={styles.flavourName}>
+                {highlightMatch(f.name, searchQuery, `${id}-name`)}
+              </p>
               <div className={styles.cardActions}>
                 <button
                   type="button"
@@ -86,7 +123,9 @@ function FlavourGrid({
                 </button>
               </div>
             </div>
-            <p className={styles.flavourNote}>{f.description}</p>
+            <p className={styles.flavourNote}>
+              {highlightMatch(f.description, searchQuery, `${id}-desc`)}
+            </p>
           </li>
         );
       })}
@@ -112,6 +151,7 @@ export function FlavourListTabs({
   const liveId = `${baseId}-live`;
   const searchId = `${baseId}-search`;
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const flavourListTopRef = useRef<HTMLDivElement | null>(null);
   const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
 
   const [tab, setTab] = useState<TabId>(defaultTab);
@@ -173,7 +213,7 @@ export function FlavourListTabs({
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) {
+      if (e.ctrlKey || e.metaKey || e.altKey) {
         return;
       }
       const t = e.target;
@@ -186,12 +226,19 @@ export function FlavourListTabs({
       if (t.closest("input, textarea, select, [data-flavour-skip-focus-slash]")) {
         return;
       }
-      e.preventDefault();
-      searchRef.current?.focus();
+      if (e.key === "/") {
+        e.preventDefault();
+        searchRef.current?.focus();
+        return;
+      }
+      if (e.key.toLowerCase() === "r") {
+        e.preventDefault();
+        pickRandom();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [pickRandom]);
 
   const regularTabId = `${baseId}-tab-regular`;
   const specialTabId = `${baseId}-tab-special`;
@@ -229,6 +276,11 @@ export function FlavourListTabs({
       showFavouritesOnly ||
       sortMode !== "name-asc",
     [query, effectiveSelectedTag, showFavouritesOnly, sortMode],
+  );
+
+  const savedOnTab = useMemo(
+    () => activeSource.filter((f) => favouritesSet.has(f.name)).length,
+    [activeSource, favouritesSet],
   );
 
   useEffect(() => {
@@ -278,6 +330,27 @@ export function FlavourListTabs({
     [pathname, tab],
   );
 
+  const copyFilteredList = useCallback(async () => {
+    if (filtered.length === 0) {
+      setLiveMsg("No visible flavours to copy.");
+      return;
+    }
+    const text = filtered.map((f) => f.name).join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      setLiveMsg(
+        `Copied ${filtered.length} visible flavour name${filtered.length === 1 ? "" : "s"}.`,
+      );
+    } catch {
+      setLiveMsg("Unable to copy list.");
+    }
+  }, [filtered]);
+
+  const scrollToListTop = useCallback(() => {
+    flavourListTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setLiveMsg("Back to flavour list top.");
+  }, []);
+
   const copySavedList = useCallback(async () => {
     if (favourites.length === 0) {
       setLiveMsg("No saved flavours to copy.");
@@ -299,6 +372,48 @@ export function FlavourListTabs({
     }
   }, [activeSource, favourites, favouritesSet]);
 
+  const copyVisibleLinks = useCallback(async () => {
+    if (filtered.length === 0) {
+      setLiveMsg("No visible flavours to copy links for.");
+      return;
+    }
+    const qs = window.location.search ?? "";
+    const urls = filtered.map((f) => {
+      const id = `flavour-${tab}-${slugify(f.name)}`;
+      return `${window.location.origin}${pathname}${qs}#${id}`;
+    });
+    try {
+      await navigator.clipboard.writeText(urls.join("\n"));
+      setLiveMsg(`Copied ${urls.length} visible flavour link${urls.length === 1 ? "" : "s"}.`);
+    } catch {
+      setLiveMsg("Unable to copy visible links.");
+    }
+  }, [filtered, pathname, tab]);
+
+  const saveVisible = useCallback(() => {
+    if (filtered.length === 0) {
+      setLiveMsg("No visible flavours to save.");
+      return;
+    }
+    const visibleNames = new Set(filtered.map((f) => f.name));
+    let added = 0;
+    setFavourites((current) => {
+      const next = [...current];
+      for (const name of visibleNames) {
+        if (!next.includes(name)) {
+          next.push(name);
+          added += 1;
+        }
+      }
+      return next;
+    });
+    setLiveMsg(
+      added === 0
+        ? "All visible flavours are already saved."
+        : `Saved ${added} visible flavour${added === 1 ? "" : "s"}.`,
+    );
+  }, [filtered]);
+
   const pickRandom = useCallback(() => {
     if (filtered.length === 0) {
       return;
@@ -315,7 +430,11 @@ export function FlavourListTabs({
 
   return (
     <>
-      <div className={styles.flavourToolbar}>
+      <div
+        id="flavour-list-top"
+        ref={flavourListTopRef}
+        className={styles.flavourToolbar}
+      >
         <div className={styles.searchWrap}>
           <label className={styles.searchLabel} htmlFor={searchId}>
             Search flavours
@@ -398,6 +517,22 @@ export function FlavourListTabs({
         >
           Copy saved list
         </button>
+        <button
+          type="button"
+          className={styles.filterButton}
+          onClick={saveVisible}
+          disabled={filtered.length === 0}
+        >
+          Save visible
+        </button>
+        <button
+          type="button"
+          className={styles.filterButton}
+          onClick={copyVisibleLinks}
+          disabled={filtered.length === 0}
+        >
+          Copy visible links
+        </button>
       </div>
 
       <p id={liveId} className={styles.visuallyHidden} aria-live="polite">
@@ -465,6 +600,8 @@ export function FlavourListTabs({
 
       <p className={styles.flavourResultSummary}>
         Showing {filtered.length} of {activeSource.length} on this tab
+        {savedOnTab > 0 ? ` · ${savedOnTab} saved on this tab` : ""}
+        {query.trim() !== "" ? " · Matches highlighted in cards" : ""}
         {filtersActive ? " · Filtered" : ""}
       </p>
 
@@ -484,6 +621,7 @@ export function FlavourListTabs({
               items={filtered}
               tab="regular"
               favourites={favouritesSet}
+              searchQuery={query}
               onToggleFavourite={toggleFavourite}
               onCopyFlavourLink={copyFlavourPageLink}
             />
@@ -507,6 +645,7 @@ export function FlavourListTabs({
               items={filtered}
               tab="special"
               favourites={favouritesSet}
+              searchQuery={query}
               onToggleFavourite={toggleFavourite}
               onCopyFlavourLink={copyFlavourPageLink}
             />
