@@ -1,3 +1,6 @@
+# Local handoff for the agent (see framework AGENTS.md)
+/agent-changes.review.txt
+
 # Local secrets and Cursor MCP
 .cursor/mcp.json
 .warpdesk/ticket-drafts/*
