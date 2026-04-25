@@ -321,6 +321,13 @@
   border-color: var(--accent);
 }
 
+.flavourResultSummary {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
 .emptyFlavours {
   margin: 0;
   padding: 1rem 1.1rem;
@@ -437,6 +444,15 @@
   gap: 0.5rem;
 }
 
+.cardActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
 .favouriteButton {
   margin: 0;
   padding: 0.2rem 0.5rem;
@@ -454,6 +470,24 @@
 .favouriteButton[aria-pressed="true"] {
   color: var(--ink);
   border-color: var(--border);
+}
+
+.flavourLinkButton {
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.flavourLinkButton:hover {
+  border-color: var(--accent);
 }
 
 .flavourNote {

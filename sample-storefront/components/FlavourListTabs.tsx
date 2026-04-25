@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -40,11 +41,13 @@ function FlavourGrid({
   tab,
   favourites,
   onToggleFavourite,
+  onCopyFlavourLink,
 }: {
   items: OfficialFlavour[];
   tab: TabId;
   favourites: Set<string>;
   onToggleFavourite: (name: string) => void;
+  onCopyFlavourLink: (f: OfficialFlavour) => void;
 }) {
   return (
     <ul className={styles.grid}>
@@ -63,15 +66,25 @@ function FlavourGrid({
             ) : null}
             <div className={styles.cardTitleRow}>
               <p className={styles.flavourName}>{f.name}</p>
-              <button
-                type="button"
-                className={styles.favouriteButton}
-                onClick={() => onToggleFavourite(f.name)}
-                aria-pressed={isFavourite}
-                aria-label={isFavourite ? `Remove ${f.name} from favourites` : `Add ${f.name} to favourites`}
-              >
-                {isFavourite ? "★ Saved" : "☆ Save"}
-              </button>
+              <div className={styles.cardActions}>
+                <button
+                  type="button"
+                  className={styles.flavourLinkButton}
+                  onClick={() => onCopyFlavourLink(f)}
+                  aria-label={`Copy page link to ${f.name}`}
+                >
+                  Copy link
+                </button>
+                <button
+                  type="button"
+                  className={styles.favouriteButton}
+                  onClick={() => onToggleFavourite(f.name)}
+                  aria-pressed={isFavourite}
+                  aria-label={isFavourite ? `Remove ${f.name} from favourites` : `Add ${f.name} to favourites`}
+                >
+                  {isFavourite ? "★ Saved" : "☆ Save"}
+                </button>
+              </div>
             </div>
             <p className={styles.flavourNote}>{f.description}</p>
           </li>
@@ -94,10 +107,12 @@ export function FlavourListTabs({
   specialSnapshotVerifiedLabel?: string;
   defaultTab?: TabId;
 }) {
+  const pathname = usePathname() ?? "/";
   const baseId = useId();
   const liveId = `${baseId}-live`;
   const searchId = `${baseId}-search`;
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
 
   const [tab, setTab] = useState<TabId>(defaultTab);
   const [query, setQuery] = useState("");
@@ -127,6 +142,34 @@ export function FlavourListTabs({
   useEffect(() => {
     window.localStorage.setItem("duck-island-favourites", JSON.stringify(favourites));
   }, [favourites]);
+
+  useEffect(() => {
+    const syncFromHash = () => {
+      const raw = window.location.hash.replace(/^#/, "");
+      if (!raw.startsWith("flavour-")) {
+        return;
+      }
+      const m = /^flavour-(regular|special)-(.+)$/.exec(raw);
+      if (!m) {
+        return;
+      }
+      const tabId = m[1] as TabId;
+      const nameSlug = m[2]!;
+      const list = tabId === "regular" ? regularFlavours : specialFlavours;
+      if (!list.some((fl) => slugify(fl.name) === nameSlug)) {
+        return;
+      }
+      setQuery("");
+      setSelectedTag("all");
+      setSortMode("name-asc");
+      setShowFavouritesOnly(false);
+      setTab(tabId);
+      setPendingScrollId(raw);
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, [regularFlavours, specialFlavours]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -179,6 +222,29 @@ export function FlavourListTabs({
     [activeSource, query, effectiveSelectedTag, sortMode, showFavouritesOnly, favouritesSet],
   );
 
+  const filtersActive = useMemo(
+    () =>
+      query.trim() !== "" ||
+      effectiveSelectedTag !== "all" ||
+      showFavouritesOnly ||
+      sortMode !== "name-asc",
+    [query, effectiveSelectedTag, showFavouritesOnly, sortMode],
+  );
+
+  useEffect(() => {
+    if (!pendingScrollId) {
+      return;
+    }
+    const t = window.setTimeout(() => {
+      const el = document.getElementById(pendingScrollId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      setPendingScrollId(null);
+    }, 0);
+    return () => window.clearTimeout(t);
+  }, [pendingScrollId, tab, filtered.length]);
+
   const toggleFavourite = useCallback((name: string) => {
     setFavourites((current) => {
       if (current.includes(name)) {
@@ -196,6 +262,21 @@ export function FlavourListTabs({
     setLiveMsg("Filters reset.");
     searchRef.current?.focus();
   }, []);
+
+  const copyFlavourPageLink = useCallback(
+    async (f: OfficialFlavour) => {
+      const id = `flavour-${tab}-${slugify(f.name)}`;
+      const qs = window.location.search ?? "";
+      const url = `${window.location.origin}${pathname}${qs}#${id}`;
+      try {
+        await navigator.clipboard.writeText(url);
+        setLiveMsg(`Link to ${f.name} copied.`);
+      } catch {
+        setLiveMsg("Unable to copy link.");
+      }
+    },
+    [pathname, tab],
+  );
 
   const copySavedList = useCallback(async () => {
     if (favourites.length === 0) {
@@ -252,6 +333,13 @@ export function FlavourListTabs({
             placeholder="Type to filter by name or description…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                e.preventDefault();
+                setQuery("");
+                setLiveMsg("Search cleared.");
+              }
+            }}
           />
         </div>
         <button
@@ -375,6 +463,11 @@ export function FlavourListTabs({
         )}
       </p>
 
+      <p className={styles.flavourResultSummary}>
+        Showing {filtered.length} of {activeSource.length} on this tab
+        {filtersActive ? " · Filtered" : ""}
+      </p>
+
       <div
         id={regularPanelId}
         role="tabpanel"
@@ -392,6 +485,7 @@ export function FlavourListTabs({
               tab="regular"
               favourites={favouritesSet}
               onToggleFavourite={toggleFavourite}
+              onCopyFlavourLink={copyFlavourPageLink}
             />
           )
         ) : null}
@@ -414,6 +508,7 @@ export function FlavourListTabs({
               tab="special"
               favourites={favouritesSet}
               onToggleFavourite={toggleFavourite}
+              onCopyFlavourLink={copyFlavourPageLink}
             />
           )
         ) : null}
