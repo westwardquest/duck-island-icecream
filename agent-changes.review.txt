@@ -1,0 +1,1 @@
+[] Implement ticket 6 (special flavour names on demo homepage)
