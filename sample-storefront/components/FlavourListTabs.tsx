@@ -52,17 +52,20 @@ export function FlavourListTabs({
   specialFlavours,
   flavoursPageUrl,
   scoopSpecialFlavoursPageUrl,
+  /** Scoop store specials are the most visible “homepage” subset for the demo. */
+  defaultTab = "special",
 }: {
   regularFlavours: OfficialFlavour[];
   specialFlavours: OfficialFlavour[];
   flavoursPageUrl: string;
   scoopSpecialFlavoursPageUrl: string;
+  defaultTab?: TabId;
 }) {
   const baseId = useId();
   const liveId = `${baseId}-live`;
   const searchId = `${baseId}-search`;
 
-  const [tab, setTab] = useState<TabId>("regular");
+  const [tab, setTab] = useState<TabId>(defaultTab);
   const [query, setQuery] = useState("");
   const [liveMsg, setLiveMsg] = useState("");
 

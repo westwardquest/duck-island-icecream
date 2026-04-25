@@ -8,7 +8,7 @@ import type { OfficialFlavour } from "./officialFlavours";
 export const specialFlavours: OfficialFlavour[] = [
   {
     name: "Mint Chip",
-    tags: ["VEGAN", "GF"],
+    tags: ["V", "GF"],
     description:
       "Made from a blend of cashew, coconut and Bonsoy soy milk. This is a cool, minty ice cream packed with snappy dark chocolate shards. Fresh, nostalgic and so delish you won't be missing the dairy in this one.",
   },
