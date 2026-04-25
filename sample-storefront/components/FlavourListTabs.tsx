@@ -12,6 +12,7 @@ import type { OfficialFlavour } from "@/data/officialFlavours";
 import styles from "@/app/page.module.css";
 
 type TabId = "regular" | "special";
+type SortMode = "name-asc" | "name-desc";
 
 function slugify(name: string) {
   return name
@@ -29,17 +30,27 @@ function matchesQuery(f: OfficialFlavour, q: string) {
   return blob.includes(t);
 }
 
+function compareFlavours(a: OfficialFlavour, b: OfficialFlavour, sortMode: SortMode) {
+  const direction = sortMode === "name-desc" ? -1 : 1;
+  return a.name.localeCompare(b.name) * direction;
+}
+
 function FlavourGrid({
   items,
   tab,
+  favourites,
+  onToggleFavourite,
 }: {
   items: OfficialFlavour[];
   tab: TabId;
+  favourites: Set<string>;
+  onToggleFavourite: (name: string) => void;
 }) {
   return (
     <ul className={styles.grid}>
       {items.map((f) => {
         const id = `flavour-${tab}-${slugify(f.name)}`;
+        const isFavourite = favourites.has(f.name);
         return (
           <li
             key={`${tab}-${slugify(f.name)}`}
@@ -50,7 +61,18 @@ function FlavourGrid({
             {f.tags && f.tags.length > 0 ? (
               <p className={styles.flavourTags}>{f.tags.join(" · ")}</p>
             ) : null}
-            <p className={styles.flavourName}>{f.name}</p>
+            <div className={styles.cardTitleRow}>
+              <p className={styles.flavourName}>{f.name}</p>
+              <button
+                type="button"
+                className={styles.favouriteButton}
+                onClick={() => onToggleFavourite(f.name)}
+                aria-pressed={isFavourite}
+                aria-label={isFavourite ? `Remove ${f.name} from favourites` : `Add ${f.name} to favourites`}
+              >
+                {isFavourite ? "★ Saved" : "☆ Save"}
+              </button>
+            </div>
             <p className={styles.flavourNote}>{f.description}</p>
           </li>
         );
@@ -79,7 +101,31 @@ export function FlavourListTabs({
 
   const [tab, setTab] = useState<TabId>(defaultTab);
   const [query, setQuery] = useState("");
+  const [selectedTag, setSelectedTag] = useState("all");
+  const [sortMode, setSortMode] = useState<SortMode>("name-asc");
+  const [favourites, setFavourites] = useState<string[]>(() => {
+    if (typeof window === "undefined") {
+      return [];
+    }
+    const raw = window.localStorage.getItem("duck-island-favourites");
+    if (!raw) {
+      return [];
+    }
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.every((item) => typeof item === "string")) {
+        return parsed;
+      }
+    } catch {
+      // Ignore malformed localStorage payload.
+    }
+    return [];
+  });
   const [liveMsg, setLiveMsg] = useState("");
+
+  useEffect(() => {
+    window.localStorage.setItem("duck-island-favourites", JSON.stringify(favourites));
+  }, [favourites]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -109,11 +155,37 @@ export function FlavourListTabs({
   const specialPanelId = `${baseId}-panel-special`;
 
   const activeSource = tab === "regular" ? regularFlavours : specialFlavours;
+  const availableTags = useMemo(() => {
+    const tags = new Set<string>();
+    for (const flavour of activeSource) {
+      for (const tag of flavour.tags ?? []) {
+        tags.add(tag);
+      }
+    }
+    return [...tags].sort();
+  }, [activeSource]);
+  const effectiveSelectedTag =
+    selectedTag === "all" || availableTags.includes(selectedTag) ? selectedTag : "all";
 
   const filtered = useMemo(
-    () => activeSource.filter((f) => matchesQuery(f, query)),
-    [activeSource, query],
+    () =>
+      activeSource
+        .filter((f) => matchesQuery(f, query))
+        .filter((f) => effectiveSelectedTag === "all" || (f.tags ?? []).includes(effectiveSelectedTag))
+        .sort((a, b) => compareFlavours(a, b, sortMode)),
+    [activeSource, query, effectiveSelectedTag, sortMode],
   );
+
+  const favouritesSet = useMemo(() => new Set(favourites), [favourites]);
+
+  const toggleFavourite = useCallback((name: string) => {
+    setFavourites((current) => {
+      if (current.includes(name)) {
+        return current.filter((item) => item !== name);
+      }
+      return [...current, name];
+    });
+  }, []);
 
   const pickRandom = useCallback(() => {
     if (filtered.length === 0) {
@@ -159,6 +231,34 @@ export function FlavourListTabs({
         >
           Random scoop
         </button>
+      </div>
+      <div className={styles.filterBar}>
+        <label className={styles.filterLabel}>
+          Dietary filter
+          <select
+            className={styles.filterSelect}
+            value={effectiveSelectedTag}
+            onChange={(e) => setSelectedTag(e.target.value)}
+          >
+            <option value="all">All</option>
+            {availableTags.map((tag) => (
+              <option key={tag} value={tag}>
+                {tag}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className={styles.filterLabel}>
+          Sort
+          <select
+            className={styles.filterSelect}
+            value={sortMode}
+            onChange={(e) => setSortMode(e.target.value as SortMode)}
+          >
+            <option value="name-asc">Name A-Z</option>
+            <option value="name-desc">Name Z-A</option>
+          </select>
+        </label>
       </div>
 
       <p id={liveId} className={styles.visuallyHidden} aria-live="polite">
@@ -236,7 +336,12 @@ export function FlavourListTabs({
               No flavours match your search. Try different words or clear the search box.
             </p>
           ) : (
-            <FlavourGrid items={filtered} tab="regular" />
+            <FlavourGrid
+              items={filtered}
+              tab="regular"
+              favourites={favouritesSet}
+              onToggleFavourite={toggleFavourite}
+            />
           )
         ) : null}
       </div>
@@ -253,7 +358,12 @@ export function FlavourListTabs({
               No flavours match your search. Try different words or clear the search box.
             </p>
           ) : (
-            <FlavourGrid items={filtered} tab="special" />
+            <FlavourGrid
+              items={filtered}
+              tab="special"
+              favourites={favouritesSet}
+              onToggleFavourite={toggleFavourite}
+            />
           )
         ) : null}
       </div>

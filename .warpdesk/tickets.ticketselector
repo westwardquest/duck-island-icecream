@@ -49,6 +49,78 @@
       "cursor_ms": 0,
       "total_ms": 0,
       "first_started_at": null
+    },
+    {
+      "id": "7a61ea29-b2b2-4f8b-9fe7-dc6f5903f144",
+      "ticket_number": 3,
+      "title": "Add tab for special flavours on homescreen",
+      "priority_score": 75,
+      "status": "client_responded",
+      "type": "feature",
+      "dev_ms": 0,
+      "cursor_ms": 0,
+      "total_ms": 0,
+      "first_started_at": null
+    },
+    {
+      "id": "a202888e-cef0-4539-9cdc-c8f931001ef2",
+      "ticket_number": 8,
+      "title": "Fix typo 'Pecan Buttterscotch' in demo environment",
+      "priority_score": 72,
+      "status": "posted",
+      "type": "chore",
+      "dev_ms": 0,
+      "cursor_ms": 0,
+      "total_ms": 0,
+      "first_started_at": null
+    },
+    {
+      "id": "379ff72a-d8d3-4327-a9c2-6c93ff361f8e",
+      "ticket_number": 16,
+      "title": "Add promotional banner for Klaviyo integration",
+      "priority_score": 58,
+      "status": "posted",
+      "type": "feature",
+      "dev_ms": 0,
+      "cursor_ms": 0,
+      "total_ms": 0,
+      "first_started_at": null
+    },
+    {
+      "id": "26c95813-6181-4b64-b1ca-21381ac99efc",
+      "ticket_number": 22,
+      "title": "Documentation: Architecture",
+      "priority_score": 51,
+      "status": "heeded",
+      "type": "document",
+      "dev_ms": 0,
+      "cursor_ms": 0,
+      "total_ms": 0,
+      "first_started_at": null
+    },
+    {
+      "id": "a70ce15d-9380-475c-9113-c31099c93c31",
+      "ticket_number": 13,
+      "title": "Create 'Dog Smelling Competition' Events Page",
+      "priority_score": 51,
+      "status": "client_responded",
+      "type": "feature",
+      "dev_ms": 0,
+      "cursor_ms": 0,
+      "total_ms": 0,
+      "first_started_at": null
+    },
+    {
+      "id": "4f0a98d6-f1d2-4339-a8ab-f95a2223f127",
+      "ticket_number": 23,
+      "title": "Client Clive testing WarpDesk chat feature",
+      "priority_score": 50,
+      "status": "heeded",
+      "type": "feature",
+      "dev_ms": 0,
+      "cursor_ms": 0,
+      "total_ms": 0,
+      "first_started_at": null
     }
   ],
   "active_index": 0
