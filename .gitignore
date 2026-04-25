@@ -12,3 +12,4 @@ vendor/warpdesk-client-kit/node_modules/
 # Nested knowledge repo is its own git root — ignore here so `git add` from this
 # repo does not treat it as an embedded repository (avoids broken commits / IDE errors).
 *-knowledge-base/
+.warpdesk/tickets.ticketselector
