@@ -82,6 +82,23 @@
   font-size: 0.85rem;
 }
 
+.languageToggle {
+  margin: 0;
+  padding: 0.45rem 0.75rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.languageToggle:hover {
+  border-color: var(--accent);
+}
+
 .backToTop {
   position: fixed;
   right: 1rem;
@@ -277,6 +294,31 @@
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 10px;
+}
+
+.filterButton {
+  margin: 0;
+  padding: 0.45rem 0.7rem;
+  align-self: flex-end;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filterButton[data-active="true"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: transparent;
+}
+
+.filterButton:hover {
+  border-color: var(--accent);
 }
 
 .emptyFlavours {

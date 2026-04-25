@@ -7,7 +7,31 @@ function looksLikeEmail(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.trim());
 }
 
-export function NewsletterMock() {
+type Locale = "en" | "es";
+
+const copy = {
+  en: {
+    title: "Duck News (demo)",
+    lead: "This form does not send data anywhere — it is a UI demo only.",
+    success: "Thanks — you are on the list (not really; this is static).",
+    label: "Email",
+    placeholder: "you@example.com",
+    cta: "Sign up",
+    invalidEmail: "Please enter a valid email address.",
+  },
+  es: {
+    title: "Noticias de Duck (demo)",
+    lead: "Este formulario no envia datos a ningun lugar; es solo una demo de interfaz.",
+    success: "Gracias. Ya estas en la lista (no de verdad; esto es estatico).",
+    label: "Correo",
+    placeholder: "tu@ejemplo.com",
+    cta: "Registrarse",
+    invalidEmail: "Ingresa un correo valido.",
+  },
+} as const;
+
+export function NewsletterMock({ locale = "en" }: { locale?: Locale }) {
+  const t = copy[locale];
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +39,7 @@ export function NewsletterMock() {
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!looksLikeEmail(email)) {
-      setError("Please enter a valid email address.");
+      setError(t.invalidEmail);
       setSubmitted(false);
       return;
     }
@@ -25,18 +49,16 @@ export function NewsletterMock() {
 
   return (
     <div className={styles.newsletter}>
-      <h3 className={styles.newsletterTitle}>Duck News (demo)</h3>
-      <p className={styles.newsletterLead}>
-        This form does not send data anywhere — it&apos;s a UI demo only.
-      </p>
+      <h3 className={styles.newsletterTitle}>{t.title}</h3>
+      <p className={styles.newsletterLead}>{t.lead}</p>
       {submitted ? (
         <p className={styles.newsletterSuccess} role="status">
-          Thanks — you&apos;re on the list (not really; this is static).
+          {t.success}
         </p>
       ) : (
         <form className={styles.newsletterForm} onSubmit={handleSubmit} noValidate>
           <label className={styles.newsletterLabel} htmlFor="newsletter-email">
-            Email
+            {t.label}
           </label>
           <div className={styles.newsletterRow}>
             <input
@@ -45,7 +67,7 @@ export function NewsletterMock() {
               type="email"
               name="email"
               autoComplete="email"
-              placeholder="you@example.com"
+              placeholder={t.placeholder}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -55,7 +77,7 @@ export function NewsletterMock() {
               aria-describedby={error ? "newsletter-error" : undefined}
             />
             <button type="submit" className={styles.newsletterButton}>
-              Sign up
+              {t.cta}
             </button>
           </div>
           {error ? (

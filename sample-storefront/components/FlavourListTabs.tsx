@@ -103,6 +103,7 @@ export function FlavourListTabs({
   const [query, setQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState("all");
   const [sortMode, setSortMode] = useState<SortMode>("name-asc");
+  const [showFavouritesOnly, setShowFavouritesOnly] = useState(false);
   const [favourites, setFavourites] = useState<string[]>(() => {
     if (typeof window === "undefined") {
       return [];
@@ -166,17 +167,17 @@ export function FlavourListTabs({
   }, [activeSource]);
   const effectiveSelectedTag =
     selectedTag === "all" || availableTags.includes(selectedTag) ? selectedTag : "all";
+  const favouritesSet = useMemo(() => new Set(favourites), [favourites]);
 
   const filtered = useMemo(
     () =>
       activeSource
         .filter((f) => matchesQuery(f, query))
         .filter((f) => effectiveSelectedTag === "all" || (f.tags ?? []).includes(effectiveSelectedTag))
+        .filter((f) => !showFavouritesOnly || favouritesSet.has(f.name))
         .sort((a, b) => compareFlavours(a, b, sortMode)),
-    [activeSource, query, effectiveSelectedTag, sortMode],
+    [activeSource, query, effectiveSelectedTag, sortMode, showFavouritesOnly, favouritesSet],
   );
-
-  const favouritesSet = useMemo(() => new Set(favourites), [favourites]);
 
   const toggleFavourite = useCallback((name: string) => {
     setFavourites((current) => {
@@ -186,6 +187,36 @@ export function FlavourListTabs({
       return [...current, name];
     });
   }, []);
+
+  const clearFilters = useCallback(() => {
+    setQuery("");
+    setSelectedTag("all");
+    setSortMode("name-asc");
+    setShowFavouritesOnly(false);
+    setLiveMsg("Filters reset.");
+    searchRef.current?.focus();
+  }, []);
+
+  const copySavedList = useCallback(async () => {
+    if (favourites.length === 0) {
+      setLiveMsg("No saved flavours to copy.");
+      return;
+    }
+    const savedNames = activeSource
+      .map((flavour) => flavour.name)
+      .filter((name) => favouritesSet.has(name));
+    if (savedNames.length === 0) {
+      setLiveMsg("No saved flavours on this tab to copy.");
+      return;
+    }
+    const payload = savedNames.join(", ");
+    try {
+      await navigator.clipboard.writeText(payload);
+      setLiveMsg(`Copied ${savedNames.length} saved flavour${savedNames.length === 1 ? "" : "s"}.`);
+    } catch {
+      setLiveMsg("Unable to copy saved flavours.");
+    }
+  }, [activeSource, favourites, favouritesSet]);
 
   const pickRandom = useCallback(() => {
     if (filtered.length === 0) {
@@ -259,6 +290,26 @@ export function FlavourListTabs({
             <option value="name-desc">Name Z-A</option>
           </select>
         </label>
+        <button
+          type="button"
+          className={styles.filterButton}
+          onClick={() => setShowFavouritesOnly((current) => !current)}
+          aria-pressed={showFavouritesOnly}
+          data-active={showFavouritesOnly ? "true" : "false"}
+        >
+          {showFavouritesOnly ? "Showing saved only" : `Saved only (${favourites.length})`}
+        </button>
+        <button type="button" className={styles.filterButton} onClick={clearFilters}>
+          Clear filters
+        </button>
+        <button
+          type="button"
+          className={styles.filterButton}
+          onClick={copySavedList}
+          disabled={favourites.length === 0}
+        >
+          Copy saved list
+        </button>
       </div>
 
       <p id={liveId} className={styles.visuallyHidden} aria-live="polite">
