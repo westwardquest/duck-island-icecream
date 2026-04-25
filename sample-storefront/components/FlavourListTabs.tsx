@@ -173,7 +173,7 @@ export function FlavourListTabs({
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) {
+      if (e.ctrlKey || e.metaKey || e.altKey) {
         return;
       }
       const t = e.target;
@@ -186,12 +186,19 @@ export function FlavourListTabs({
       if (t.closest("input, textarea, select, [data-flavour-skip-focus-slash]")) {
         return;
       }
-      e.preventDefault();
-      searchRef.current?.focus();
+      if (e.key === "/") {
+        e.preventDefault();
+        searchRef.current?.focus();
+        return;
+      }
+      if (e.key.toLowerCase() === "r") {
+        e.preventDefault();
+        pickRandom();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [pickRandom]);
 
   const regularTabId = `${baseId}-tab-regular`;
   const specialTabId = `${baseId}-tab-special`;
@@ -299,6 +306,48 @@ export function FlavourListTabs({
     }
   }, [activeSource, favourites, favouritesSet]);
 
+  const copyVisibleLinks = useCallback(async () => {
+    if (filtered.length === 0) {
+      setLiveMsg("No visible flavours to copy links for.");
+      return;
+    }
+    const qs = window.location.search ?? "";
+    const urls = filtered.map((f) => {
+      const id = `flavour-${tab}-${slugify(f.name)}`;
+      return `${window.location.origin}${pathname}${qs}#${id}`;
+    });
+    try {
+      await navigator.clipboard.writeText(urls.join("\n"));
+      setLiveMsg(`Copied ${urls.length} visible flavour link${urls.length === 1 ? "" : "s"}.`);
+    } catch {
+      setLiveMsg("Unable to copy visible links.");
+    }
+  }, [filtered, pathname, tab]);
+
+  const saveVisible = useCallback(() => {
+    if (filtered.length === 0) {
+      setLiveMsg("No visible flavours to save.");
+      return;
+    }
+    const visibleNames = new Set(filtered.map((f) => f.name));
+    let added = 0;
+    setFavourites((current) => {
+      const next = [...current];
+      for (const name of visibleNames) {
+        if (!next.includes(name)) {
+          next.push(name);
+          added += 1;
+        }
+      }
+      return next;
+    });
+    setLiveMsg(
+      added === 0
+        ? "All visible flavours are already saved."
+        : `Saved ${added} visible flavour${added === 1 ? "" : "s"}.`,
+    );
+  }, [filtered]);
+
   const pickRandom = useCallback(() => {
     if (filtered.length === 0) {
       return;
@@ -398,6 +447,22 @@ export function FlavourListTabs({
         >
           Copy saved list
         </button>
+        <button
+          type="button"
+          className={styles.filterButton}
+          onClick={saveVisible}
+          disabled={filtered.length === 0}
+        >
+          Save visible
+        </button>
+        <button
+          type="button"
+          className={styles.filterButton}
+          onClick={copyVisibleLinks}
+          disabled={filtered.length === 0}
+        >
+          Copy visible links
+        </button>
       </div>
 
       <p id={liveId} className={styles.visuallyHidden} aria-live="polite">
@@ -484,6 +549,7 @@ export function FlavourListTabs({
               items={filtered}
               tab="regular"
               favourites={favouritesSet}
+              searchQuery={query}
               onToggleFavourite={toggleFavourite}
               onCopyFlavourLink={copyFlavourPageLink}
             />
@@ -507,6 +573,7 @@ export function FlavourListTabs({
               items={filtered}
               tab="special"
               favourites={favouritesSet}
+              searchQuery={query}
               onToggleFavourite={toggleFavourite}
               onCopyFlavourLink={copyFlavourPageLink}
             />
