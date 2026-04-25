@@ -1,4 +1,0 @@
-[] Implement ticket 6 (special flavour names on demo homepage)
-[] After “go”: close ticket #6 in WarpDesk and fix ticket #4 (homepage special flavours) in sample-storefront
-[] Apply the two ticket YAML drafts in WarpDesk Tools (Confirm)
-[] Remove legacy website URL from knowledge + sample-storefront (ticket #9); draft comment on #9; draft close #6
