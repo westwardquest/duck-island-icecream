@@ -131,6 +131,7 @@ export default function Home() {
             regularFlavours={officialFlavours}
             specialFlavours={specialFlavours}
             specialSnapshotVerifiedLabel={specialFlavoursSnapshotVerifiedLabel}
+            locale={locale}
           />
         </section>
 
