@@ -1,6 +1,6 @@
 /**
- * Flavours from https://www.duckislandicecream.co.nz/flavours
- * (names, descriptions, and dietary tags as on the live site; static snapshot, not scraped at runtime).
+ * Full “regular” range — names, descriptions, and dietary tags (static snapshot; not scraped at runtime).
+ * Legacy public URL omitted from new-site and demo copy.
  */
 export type OfficialFlavour = {
   name: string;

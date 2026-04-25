@@ -210,6 +210,11 @@
   color: var(--muted);
 }
 
+.searchHint {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
 .searchInput {
   width: 100%;
   margin: 0;
@@ -244,6 +249,34 @@
 .randomScoop:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.filterLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.filterSelect {
+  min-width: 9rem;
+  margin: 0;
+  padding: 0.45rem 0.65rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
 }
 
 .emptyFlavours {
@@ -353,6 +386,32 @@
   margin: 0 0 0.4rem;
   font-weight: 600;
   font-size: 1rem;
+}
+
+.cardTitleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.favouriteButton {
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.favouriteButton[aria-pressed="true"] {
+  color: var(--ink);
+  border-color: var(--border);
 }
 
 .flavourNote {

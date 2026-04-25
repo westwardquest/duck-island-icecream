@@ -5,16 +5,20 @@ type Props = {
   homeUrl: string;
 };
 
+const isHttpUrl = (s: string) => /^https?:\/\//i.test(s);
+
 /**
- * Official header wordmark SVGs from https://www.duckislandicecream.co.nz/ (extracted from live HTML).
+ * Official header wordmark SVGs (static markup in this repo, aligned with the brand bar layout).
  */
 export function DuckIslandLogo({ homeUrl }: Props) {
+  const openInNewTab = isHttpUrl(homeUrl);
   return (
     <a
       href={homeUrl}
       className={styles.wrap}
-      target="_blank"
-      rel="noopener noreferrer"
+      {...(openInNewTab
+        ? { target: "_blank" as const, rel: "noopener noreferrer" as const }
+        : {})}
       aria-label="Duck Island Ice Cream"
     >
       <span

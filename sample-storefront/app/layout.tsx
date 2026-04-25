@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -15,7 +14,7 @@ const fraunces = Fraunces({
 
 const siteTitle = "Duck Island Ice Cream — sample storefront";
 const siteDescription =
-  "Demo site for the Duck Island Ice Cream workspace. Flavours mirror duckislandicecream.co.nz (static snapshot).";
+  "Demo site for the Duck Island Ice Cream workspace. Flavours are a static in-repo snapshot.";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -40,8 +39,6 @@ export const metadata: Metadata = {
   },
 };
 
-const themeInitScript = `(function(){try{var k='duck-island-sample-theme';var s=localStorage.getItem(k);var d=document.documentElement;if(s==='dark'||s==='light'){d.setAttribute('data-theme',s);}else if(window.matchMedia('(prefers-color-scheme: dark)').matches){d.setAttribute('data-theme','dark');}else{d.setAttribute('data-theme','light');}}catch(e){}})();`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -53,12 +50,7 @@ export default function RootLayout({
       className={`${dmSans.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
-      <body>
-        <Script id="theme-init" strategy="beforeInteractive">
-          {themeInitScript}
-        </Script>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
