@@ -5,7 +5,7 @@ import styles from "@/app/page.module.css";
 
 const SHOW_AFTER_PX = 400;
 
-export function BackToTop() {
+export function BackToTop({ label = "Back to top" }: { label?: string }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -32,9 +32,9 @@ export function BackToTop() {
       type="button"
       className={styles.backToTop}
       onClick={goTop}
-      aria-label="Back to top"
+      aria-label={label}
     >
-      ↑ Top
+      ↑ {label}
     </button>
   );
 }
