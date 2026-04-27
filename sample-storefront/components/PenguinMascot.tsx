@@ -1,6 +1,6 @@
 import styles from "./PenguinMascot.module.css";
 
-const FEATHER = "#2a2835";
+const FEATHER = "var(--accent-strong)";
 
 /**
  * Generic penguin mascot (inline SVG) for header branding — ticket #10.

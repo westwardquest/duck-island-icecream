@@ -23,5 +23,5 @@
 }
 
 .markup :global(svg.logo-purple path.fill) {
-  fill: #4a3568;
+  fill: var(--accent-strong);
 }

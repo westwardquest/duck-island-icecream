@@ -18,8 +18,8 @@ const siteDescription =
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fff8f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#12100e" },
+    { media: "(prefers-color-scheme: light)", color: "#fff0f8" },
+    { media: "(prefers-color-scheme: dark)", color: "#2d0621" },
   ],
 };
 

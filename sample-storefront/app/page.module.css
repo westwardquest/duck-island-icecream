@@ -372,7 +372,7 @@
 
 .tab:hover {
   color: var(--ink);
-  border-color: #c4b8a8;
+  border-color: var(--accent);
 }
 
 .tab[data-active="true"] {
@@ -407,7 +407,7 @@
 }
 
 .inlineTabLink:hover {
-  color: #6b4f3a;
+  color: var(--accent-strong);
 }
 
 .grid {

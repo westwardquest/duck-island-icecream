@@ -8,6 +8,7 @@ import { NewsletterMock } from "@/components/NewsletterMock";
 import { PenguinMascot } from "@/components/PenguinMascot";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { officialFlavours } from "@/data/officialFlavours";
+import { localizeFlavoursEs } from "@/data/flavourTranslationsEs";
 import {
   specialFlavours,
   specialFlavoursSnapshotVerifiedLabel,
@@ -87,6 +88,10 @@ const copy = {
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("en");
   const t = copy[locale];
+  const regularFlavoursForLocale =
+    locale === "es" ? localizeFlavoursEs(officialFlavours) : officialFlavours;
+  const specialFlavoursForLocale =
+    locale === "es" ? localizeFlavoursEs(specialFlavours) : specialFlavours;
 
   return (
     <div className={styles.page}>
@@ -128,9 +133,10 @@ export default function Home() {
             {t.flavoursHeading}
           </h2>
           <FlavourListTabs
-            regularFlavours={officialFlavours}
-            specialFlavours={specialFlavours}
+            regularFlavours={regularFlavoursForLocale}
+            specialFlavours={specialFlavoursForLocale}
             specialSnapshotVerifiedLabel={specialFlavoursSnapshotVerifiedLabel}
+            locale={locale}
           />
         </section>
 
