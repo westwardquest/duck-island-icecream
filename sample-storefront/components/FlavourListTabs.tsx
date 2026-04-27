@@ -221,7 +221,7 @@ function FlavourGrid({
   searchQuery: string;
   onToggleFavourite: (name: string) => void;
   onCopyFlavourLink: (f: OfficialFlavour) => void;
-  t: (typeof copy)["en"];
+  t: (typeof copy)[Locale];
 }) {
   return (
     <ul className={styles.grid}>
