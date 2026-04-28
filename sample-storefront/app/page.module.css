@@ -249,6 +249,31 @@
   opacity: 0.85;
 }
 
+.randomScoopCluster {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bounceScoop {
+  display: inline-block;
+  font-size: 1.4rem;
+  line-height: 1;
+  user-select: none;
+  animation: bounce-scoop 1.1s ease-in-out infinite;
+}
+
+@keyframes bounce-scoop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.4rem);
+  }
+}
+
 .randomScoop {
   margin: 0;
   padding: 0.5rem 1rem;
