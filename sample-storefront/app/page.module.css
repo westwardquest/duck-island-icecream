@@ -186,6 +186,28 @@
   max-width: 40rem;
 }
 
+.heroActions {
+  margin-top: 1rem;
+}
+
+.eventsCta {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0.6rem 0.95rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.eventsCta:hover {
+  border-color: var(--accent);
+}
+
 .section {
   margin-bottom: 2.5rem;
 }
