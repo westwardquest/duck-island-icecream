@@ -1,0 +1,9 @@
+# Populated by quickstart (override clone URL in .env.local if you fork the kit)
+WORKSPACE_NAME="Duck Island Icecream"
+WORKSPACE_SLUG=duck-island-icecream
+DEV_APP_ORIGIN=https://warpdesk.xyz
+NEXT_PUBLIC_SUPABASE_URL=https://getwtmnmaoqnwviicvvm.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=""
+GITHUB_OWNER=westwardquest
+KNOWLEDGE_REPO_HTTPS=https://github.com/westwardquest/duck-island-icecream-knowledge-base
+GITHUB_WEBHOOK_SECRET=""
