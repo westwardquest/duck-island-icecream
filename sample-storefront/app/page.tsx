@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { DuckIslandLogo } from "@/components/DuckIslandLogo";
 import { FlavourListTabs } from "@/components/FlavourListTabs";
@@ -26,6 +27,7 @@ const copy = {
     heroTitle: "Small batch ice cream, big flavour",
     heroLead:
       "This page is a lightweight stand-in for a future Duck Island site: the regular tab mirrors the public flavours listing, and the specials tab mirrors scoop store special flavours (static copy, not live-scraped). Use search and random scoop, toggle dark mode, and explore the FAQ — all client-side; no backend.",
+    eventsCtaLabel: "Dog Smelling Competition: View event details",
     flavoursHeading: "Flavours",
     visitHeading: "Visit us",
     visitLine1:
@@ -58,6 +60,7 @@ const copy = {
     heroTitle: "Helado artesanal, gran sabor",
     heroLead:
       "Esta pagina es una maqueta ligera del futuro sitio de Duck Island: la pestana regular refleja la lista publica de sabores y la pestana de especiales refleja los sabores especiales de tienda (copia estatica, no extraida en vivo). Usa la busqueda y la opcion de sabor aleatorio, cambia el modo oscuro y revisa las preguntas frecuentes; todo en cliente, sin backend.",
+    eventsCtaLabel: "Competencia de Oler Perros: Ver detalles del evento",
     flavoursHeading: "Sabores",
     visitHeading: "Visitanos",
     visitLine1:
@@ -126,6 +129,11 @@ export default function Home() {
         <section className={styles.hero}>
           <h1 className={styles.heroTitle}>{t.heroTitle}</h1>
           <p className={styles.lead}>{t.heroLead}</p>
+          <div className={styles.heroActions}>
+            <Link className={styles.eventsCta} href="/events">
+              {t.eventsCtaLabel}
+            </Link>
+          </div>
         </section>
 
         <section className={styles.section} aria-labelledby="flavours-heading">

@@ -68,6 +68,8 @@ const copy = {
     saveVisible: "Save visible",
     removeVisibleSaved: "Remove visible saved",
     copyVisibleLinks: "Copy visible links",
+    copyVisibleList: "Copy visible list",
+    listTop: "List top",
     flavourListAria: "Flavour list",
     regularFlavours: "Regular flavours",
     specialFlavours: "Special flavours",
@@ -134,6 +136,8 @@ const copy = {
     saveVisible: "Guardar visibles",
     removeVisibleSaved: "Quitar visibles guardados",
     copyVisibleLinks: "Copiar enlaces visibles",
+    copyVisibleList: "Copiar lista visible",
+    listTop: "Volver al inicio",
     flavourListAria: "Lista de sabores",
     regularFlavours: "Sabores regulares",
     specialFlavours: "Sabores especiales",
@@ -642,14 +646,19 @@ export function FlavourListTabs({
             }}
           />
         </div>
-        <button
-          type="button"
-          className={styles.randomScoop}
-          onClick={pickRandom}
-          disabled={filtered.length === 0}
-        >
-          {t.randomScoop}
-        </button>
+        <div className={styles.randomScoopCluster}>
+          <span className={styles.bounceScoop} aria-hidden="true">
+            🍦
+          </span>
+          <button
+            type="button"
+            className={styles.randomScoop}
+            onClick={pickRandom}
+            disabled={filtered.length === 0}
+          >
+            {t.randomScoop}
+          </button>
+        </div>
       </div>
       <div className={styles.filterBar}>
         <label className={styles.filterLabel}>
@@ -721,6 +730,17 @@ export function FlavourListTabs({
           disabled={filtered.length === 0}
         >
           {t.copyVisibleLinks}
+        </button>
+        <button
+          type="button"
+          className={styles.filterButton}
+          onClick={copyFilteredList}
+          disabled={filtered.length === 0}
+        >
+          {t.copyVisibleList}
+        </button>
+        <button type="button" className={styles.filterButton} onClick={scrollToListTop}>
+          {t.listTop}
         </button>
       </div>
 
