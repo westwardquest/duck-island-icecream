@@ -16,4 +16,4 @@ If the MCP log shows **Cannot find module** under the **workspace root** `node_m
 
 **Do not** set `WARPDESK_MCP_ALLOW_DIRECT_UPDATES` unless you need legacy `update_ticket` / `add_ticket_comment` MCP tools — default is **draft-only** (`draft_ticket_update` only; humans apply drafts in **warpdesk-tools** or the HTTP API, not via MCP).
 
-**Local extension:** `request_cursor_session` talks to **WarpDesk Tools** on localhost (see `.warpdesk/extension-control.json` when the extension is running).
+**Local extension:** `request_cursor_session` talks to **WarpDesk Tools** on localhost (see `.warpdesk/local/extension-control.json` when the extension is running).

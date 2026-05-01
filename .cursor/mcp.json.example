@@ -9,7 +9,7 @@
       ],
       "cwd": "${workspaceFolder}/vendor/warpdesk-client-kit",
       "env": {
-        "WARPDESK_BASE_URL": "https://warpdesk.vercel.app",
+        "WARPDESK_BASE_URL": "https://warpdesk.xyz",
         "WARPDESK_PERSONAL_ACCESS_TOKEN": ""
       }
     }
